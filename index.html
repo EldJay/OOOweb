@@ -1,0 +1,702 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ВЕБРАЗРАБОТКА — создание сайтов, реклама, продвижение в Нижнем Новгороде</title>
+<style>
+  /* ===== БАЗОВЫЕ ПЕРЕМЕННЫЕ И СБРОС ===== */
+  :root{
+    --red: #e30613;
+    --red-soft: #fef0ef;
+    --red-dark: #b8000d;
+    --black: #1c1c1e;
+    --gray: #6e6e73;
+    --gray-light: #aeaeb2;
+    --bg-light: #f5f5f7;
+    --white: #ffffff;
+    --shadow-card: 0 2px 12px rgba(0, 0, 0, 0.04);
+    --shadow-hover: 0 12px 30px rgba(0, 0, 0, 0.07);
+    --transition: 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    color: var(--black);
+    background: var(--white);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  a{text-decoration:none;color:inherit;transition:var(--transition);}
+  ul{list-style:none;}
+  img{max-width:100%;display:block;}
+  .container{max-width:1180px;margin:0 auto;padding:0 24px;}
+
+  /* ===== УБИРАЕМ НАВЯЗЧИВЫЕ РАМКИ ВЫДЕЛЕНИЯ ===== */
+  *:focus-visible { outline: 2px solid var(--red); outline-offset: 2px; }
+  *:focus:not(:focus-visible) { outline: none; }
+  a:focus, button:focus, input:focus, select:focus { outline: none; }
+  ::-moz-focus-inner { border: 0; }
+
+  /* ===== КНОПКИ ===== */
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;
+    background:var(--red);color:var(--white);
+    border:none;padding:14px 34px;border-radius:100px;
+    font-weight:600;font-size:15px;cursor:pointer;
+    transition:var(--transition);text-align:center;
+    box-shadow: 0 4px 12px rgba(227, 6, 19, 0.15);
+  }
+  .btn:hover{
+    background:var(--red-dark);
+    transform:translateY(-2px);
+    box-shadow:0 8px 20px rgba(227, 6, 19, 0.25);
+  }
+  .btn-block{display:flex;width:100%;}
+  .btn-outline{
+    background:rgba(255,255,255,0.05);backdrop-filter:blur(4px);
+    border:1px solid rgba(255,255,255,0.25);
+    color:var(--white);padding:12px 30px;box-shadow:none;
+  }
+  .btn-outline:hover{
+    background:var(--white);color:var(--black);
+    border-color:var(--white);transform:translateY(-2px);
+  }
+
+  /* ===== TOP BAR ===== */
+  .topbar{
+    background:var(--black);color:#a1a1a6;font-size:13px;padding:6px 0;
+    border-bottom:1px solid #2c2c2e;
+  }
+  .topbar .container{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;}
+  .topbar select{
+    background:transparent;color:#d1d1d6;border:none;font-size:13px;cursor:pointer;padding:2px 0;
+  }
+  .topbar select:focus{outline:none;}
+  .topbar select option{color:var(--black);}
+
+  /* ===== HEADER ===== */
+  header.main-header{
+    border-bottom:1px solid rgba(0,0,0,0.03);padding:16px 0;
+    position:sticky;top:0;
+    background:rgba(255,255,255,0.88);backdrop-filter:blur(16px);
+    z-index:100;
+  }
+  .header-inner{display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;}
+  .logo{font-size:22px;font-weight:800;letter-spacing:-0.5px;display:flex;align-items:center;gap:8px;cursor:pointer;}
+  .logo span{color:var(--red);}
+  .logo svg{width:28px;height:28px;color:var(--red);}
+  
+  nav.main-nav ul{display:flex;gap:28px;font-weight:600;font-size:15px;}
+  nav.main-nav a{position:relative;padding-bottom:4px;color:var(--black);}
+  nav.main-nav a::after{
+    content:'';position:absolute;left:0;bottom:0;width:0;height:2px;
+    background:var(--red);transition:var(--transition);
+  }
+  nav.main-nav a:hover::after{width:100%;}
+  nav.main-nav a:hover{color:var(--red);}
+  
+  .header-contacts{text-align:right;font-size:14px;line-height:1.3;}
+  .header-contacts .phone{font-weight:800;font-size:20px;color:var(--black);display:block;letter-spacing:-0.3px;}
+  .header-contacts .phone:hover{color:var(--red);}
+  .header-contacts .address{color:var(--gray);font-size:13px;}
+  
+  .burger{display:none;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:4px;}
+  .burger span{width:28px;height:3px;background:var(--black);border-radius:2px;transition:var(--transition);display:block;}
+  .burger.open span:nth-child(1){transform:rotate(45deg) translate(5px, 6px);}
+  .burger.open span:nth-child(2){opacity:0;}
+  .burger.open span:nth-child(3){transform:rotate(-45deg) translate(5px, -6px);}
+
+  /* ===== HERO ===== */
+  .hero{
+    background: #0f0f0f;
+    color:#fff;padding:80px 0 100px;position:relative;overflow:hidden;
+  }
+  .hero::after{
+    content:"";position:absolute;right:-200px;top:-200px;
+    width:600px;height:600px;background:var(--red);
+    opacity:0.1;border-radius:50%;filter:blur(80px);
+  }
+  .hero h1{
+    font-size:44px;font-weight:800;max-width:800px;line-height:1.15;
+    margin-bottom:20px;position:relative;z-index:2;
+  }
+  .hero h1 .accent{color:var(--red);text-shadow:0 0 30px rgba(227, 6, 19, 0.2);}
+  .hero p{
+    max-width:580px;font-size:18px;color:#b0b0b8;margin-bottom:32px;
+    position:relative;z-index:2;line-height:1.7;
+  }
+  .hero-buttons{display:flex;gap:16px;flex-wrap:wrap;position:relative;z-index:2;}
+
+  /* ===== ЗАГОЛОВКИ СЕКЦИЙ ===== */
+  .section{padding:80px 0;}
+  .section-title{text-align:center;font-size:34px;font-weight:800;margin-bottom:10px;letter-spacing:-0.5px;}
+  .section-subtitle{text-align:center;color:var(--gray);max-width:600px;margin:0 auto 44px;font-size:16px;}
+  .section-title .accent, .section-subtitle .accent{color:var(--red);}
+
+  /* ===== УСЛУГИ ===== */
+  .services-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .service-card{
+    background:var(--white);border-radius:16px;padding:32px 28px 28px;
+    text-align:left;transition:var(--transition);
+    box-shadow:var(--shadow-card);border:1px solid rgba(0,0,0,0.02);
+    display:flex;flex-direction:column;position:relative;
+  }
+  .service-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:rgba(227,6,19,0.1);}
+  
+  .service-icon{
+    width:48px;height:48px;border-radius:14px;
+    background:var(--red-soft);display:flex;align-items:center;justify-content:center;
+    margin-bottom:16px;color:var(--red);transition:var(--transition);
+  }
+  .service-card:hover .service-icon{background:var(--red);color:var(--white);}
+  .service-icon svg{width:24px;height:24px;stroke-width:1.8;}
+  .service-card h3{font-size:18px;margin-bottom:10px;font-weight:700;letter-spacing:-0.3px;}
+  .service-card p{color:var(--gray);font-size:14px;margin-bottom:24px;flex-grow:1;line-height:1.6;}
+  .service-card .btn{border-radius:12px;padding:12px;font-size:14px;}
+
+  /* ===== КАЛЬКУЛЯТОР ===== */
+  .calc-wrapper{
+    background:var(--bg-light);border-radius:20px;padding:48px 40px;
+    margin-top:60px;border:1px solid rgba(0,0,0,0.02);
+  }
+  .calc-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center;}
+  .calc-form h2{font-size:26px;font-weight:800;margin-bottom:6px;letter-spacing:-0.5px;}
+  .calc-form p{color:var(--gray);margin-bottom:24px;font-size:15px;}
+  .calc-form label{display:block;font-weight:600;margin-bottom:6px;font-size:14px;color:var(--black);}
+  .calc-form select{
+    width:100%;padding:12px 16px;border-radius:12px;border:1px solid #d1d1d6;
+    font-size:15px;margin-bottom:32px; /* Увеличено, чтобы список НЕ налазил на кнопку */
+    background:var(--white);color:var(--black);
+    appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236e6e73' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat:no-repeat;background-position:right 16px center;cursor:pointer;
+    transition:var(--transition);
+  }
+  .calc-form select:focus{border-color:var(--red);}
+  .calc-checkbox{display:flex;align-items:center;gap:12px;margin-bottom:24px;font-size:15px;cursor:pointer;}
+  .calc-checkbox input{width:18px;height:18px;accent-color:var(--red);cursor:pointer;flex-shrink:0;border-radius:4px;}
+  
+  .calc-result{
+    background:var(--white);border-radius:16px;padding:36px 30px;
+    text-align:center;border:1px solid #f0f0f0;box-shadow:var(--shadow-card);
+  }
+  .calc-result .label{font-size:13px;color:var(--gray-light);margin-bottom:10px;text-transform:uppercase;letter-spacing:1px;font-weight:600;}
+  .calc-result .price{font-size:42px;font-weight:800;color:var(--black);line-height:1.1;margin-bottom:4px;}
+  .calc-result .price span{color:var(--red);}
+  .calc-result .note{font-size:14px;color:var(--gray);margin-top:10px;font-weight:500;min-height:22px;}
+
+  /* ===== ПОРТФОЛИО ===== */
+  #portfolio{background:var(--bg-light);}
+  .portfolio-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .portfolio-card{
+    border-radius:16px;overflow:hidden;background:var(--white);
+    box-shadow:var(--shadow-card);transition:var(--transition);border:1px solid transparent;
+  }
+  .portfolio-card:hover{transform:translateY(-4px);box-shadow:var(--shadow-hover);border-color:rgba(227,6,19,0.1);}
+  
+  /* Стили для круглых картинок портфолио */
+  .portfolio-thumb{
+    height: auto;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    padding:0;
+    position:relative;
+    background: #f5f5f7;
+    border-bottom: 1px solid #eee;
+  }
+  .port-circle{
+    width: auto;
+    height: auto;
+    border-radius: 50%;
+    border: 3px solid var(--white);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    object-fit: cover;
+    display: block;
+  }
+
+  .portfolio-info{padding:20px 24px;}
+  .portfolio-info h4{font-size:16px;margin-bottom:4px;font-weight:700;}
+  .portfolio-info p{font-size:13px;color:var(--gray);}
+
+  /* ===== ПОЧЕМУ МЫ ===== */
+  .why-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;text-align:center;}
+  .why-item .num{font-size:36px;font-weight:800;color:var(--red);margin-bottom:4px;letter-spacing:-1px;}
+  .why-item .txt{font-size:14px;color:var(--gray);line-height:1.5;}
+  .why-section{background:var(--black);color:#fff;}
+  .why-section .why-item .txt{color:#a1a1a6;}
+  .why-section .why-item .num{color:var(--red);}
+
+  /* ===== КОНТАКТЫ ===== */
+  .contact-section{background:var(--bg-light);}
+  .contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:flex-start;}
+  .contact-info h3{font-size:26px;margin-bottom:12px;font-weight:800;letter-spacing:-0.5px;}
+  .contact-info p{color:var(--gray);margin-bottom:28px;font-size:15px;max-width:380px;}
+  .contact-info ul li{
+    margin-bottom:14px;font-size:15px;display:flex;gap:14px;align-items:flex-start;
+  }
+  .contact-info ul li svg{flex-shrink:0;width:18px;height:18px;margin-top:2px;color:var(--red);}
+  
+  .contact-form{
+    background:var(--white);border-radius:20px;padding:40px;
+    box-shadow:var(--shadow-card);border:1px solid rgba(0,0,0,0.02);
+  }
+  .form-group{margin-bottom:20px;}
+  .form-group label{display:block;font-size:14px;font-weight:600;margin-bottom:6px;color:var(--black);}
+  .form-group input{
+    width:100%;padding:12px 16px;border:1px solid #d1d1d6;border-radius:12px;
+    font-size:15px;transition:var(--transition);background:var(--white);
+  }
+  .form-group input:focus{border-color:var(--red);}
+  .form-error{color:var(--red);font-size:13px;margin-top:4px;display:none;font-weight:500;}
+  .form-group.invalid input{border-color:var(--red);background:#fffbfb;}
+  .form-group.invalid .form-error{display:block;}
+  .form-message{margin-top:16px;padding:14px;border-radius:12px;font-size:14px;text-align:center;display:none;font-weight:600;}
+  .form-message.success{display:block;background:#e8f5ed;color:#0f6e3c;border:1px solid #b8e0c8;}
+  .form-message.error{display:block;background:#fde8e8;color:var(--red);border:1px solid #f8c8c8;}
+  .form-policy{font-size:12px;color:var(--gray);margin-top:16px;text-align:center;}
+
+  /* ===== FOOTER ===== */
+  footer{background:var(--black);color:#a1a1a6;padding:32px 0;font-size:14px;border-top:1px solid #2c2c2e;}
+  .footer-inner{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+  .footer-inner .logo{color:#fff;display:flex;align-items:center;gap:8px;font-size:20px;}
+  .footer-inner .logo span{color:var(--red);}
+  .footer-inner .logo svg{width:22px;height:22px;color:var(--red);}
+
+  /* ===== АДАПТИВ ===== */
+  @media (max-width:1024px){.calc-grid{grid-template-columns:1fr;gap:32px;}}
+  @media (max-width:980px){
+    .services-grid, .portfolio-grid{grid-template-columns:repeat(2,1fr);}
+    .why-grid{grid-template-columns:repeat(2,1fr);}
+    .hero h1{font-size:36px;}
+    .contact-grid{grid-template-columns:1fr;gap:32px;}
+    .section{padding:60px 0;}
+  }
+  @media (max-width:768px){
+    .burger{display:flex;}
+    nav.main-nav{
+      position:absolute;top:100%;left:0;right:0;background:rgba(255,255,255,0.96);
+      backdrop-filter:blur(16px);border-bottom:1px solid #eee;
+      display:none;flex-direction:column;padding:16px 24px 24px;
+    }
+    nav.main-nav.open{display:flex;}
+    nav.main-nav ul{flex-direction:column;gap:16px;align-items:center;}
+    .header-contacts{display:none;}
+    .header-inner{position:relative;}
+    .hero{padding:60px 0 80px;}
+    .hero h1{font-size:28px;}
+    .section-title{font-size:26px;}
+    .calc-wrapper{padding:28px 20px;border-radius:16px;}
+    .contact-form{padding:24px 20px;}
+    .footer-inner{flex-direction:column;text-align:center;gap:10px;}
+    .topbar .container{flex-direction:column;text-align:center;}
+  }
+  @media (max-width:600px){
+    .services-grid, .portfolio-grid, .why-grid{grid-template-columns:1fr;}
+    .hero h1{font-size:24px;}
+    .hero p{font-size:16px;}
+    .calc-result .price{font-size:32px;}
+    .calc-result{padding:24px 16px;}
+    .section{padding:48px 0;}
+  }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="container">
+    <div>Режим работы: <strong>Пн–Пт 09:00–21:00</strong></div>
+    <div>
+      Город: <select id="citySelect"><option>Нижний Новгород</option><option>Москва</option><option>Казань</option><option>Санкт-Петербург</option></select>
+    </div>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header class="main-header">
+  <div class="container header-inner">
+    <!-- Логотип теперь кликабельный и ведет наверх -->
+    <div class="logo" id="logoTop">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="2" y="2" width="20" height="20" rx="4" />
+        <path d="M12 7v10M7 12h10" />
+        <circle cx="12" cy="12" r="3" fill="currentColor" stroke="var(--white)" stroke-width="1.5"/>
+      </svg>
+      ВЕБ<span>РАЗРАБОТКА</span>
+    </div>
+
+    <button class="burger" id="burgerBtn" aria-label="Меню">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="main-nav" id="mainNav">
+      <ul>
+        <li><a href="#services">Услуги</a></li>
+        <li><a href="#portfolio">Портфолио</a></li>
+        <li><a href="#contacts">Контакты</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-contacts">
+      <a href="tel:+79056611860" class="phone">+7 905 661-18-60</a>
+      <div class="address">г. Нижний Новгород, ул. Примерная, 1</div>
+    </div>
+  </div>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="container">
+    <h1>СОЗДАНИЕ САЙТОВ, РЕКЛАМА, ПРОДВИЖЕНИЕ, ДИЗАЙН, <span class="accent">АВИТО</span> В НИЖНЕМ НОВГОРОДЕ!</h1>
+    <p>Полный комплекс услуг по digital-маркетингу: от разработки до настройки рекламы и продвижения.</p>
+    <div class="hero-buttons">
+      <a href="#calc" class="btn">Рассчитать стоимость</a>
+      <a href="#contacts" class="btn-outline">Получить консультацию</a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="section" id="services">
+  <div class="container">
+    <h2 class="section-title">Наши <span class="accent">услуги</span></h2>
+    <p class="section-subtitle">Помогаем бизнесу расти онлайн — от создания сайта до полноценного продвижения</p>
+    <div class="services-grid">
+      
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="18" rx="2" ry="2"></rect><line x1="8" y1="9" x2="16" y2="9"></line><line x1="8" y1="13" x2="16" y2="13"></line></svg></div>
+        <h3>Разработка сайтов</h3>
+        <p>Создание landing page, интернет-магазинов и корпоративных сайтов под ключ.</p>
+        <a href="#calc" class="btn btn-block">ПЕРЕЙТИ В РАЗДЕЛ</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg></div>
+        <h3>Реклама в Яндекс</h3>
+        <p>Настройка контекстной рекламы в Директе и продвижение на Яндекс.Картах.</p>
+        <a href="#calc" class="btn btn-block">ПЕРЕЙТИ В РАЗДЕЛ</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline><polyline points="17 6 23 6 23 12"></polyline></svg></div>
+        <h3>Продвижение сайта</h3>
+        <p>SEO-оптимизация и комплексное продвижение сайта для роста трафика.</p>
+        <a href="#calc" class="btn btn-block">ПЕРЕЙТИ В РАЗДЕЛ</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path></svg></div>
+        <h3>Ведение Авито</h3>
+        <p>Настройка профиля, создание объявлений и продвижение карточек товаров.</p>
+        <a href="#calc" class="btn btn-block">ПЕРЕЙТИ В РАЗДЕЛ</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><path d="M21 2H3v16h5v4l6-4h7V2z"></path><path d="M8 10h.01M12 10h.01M16 10h.01"></path></svg></div>
+        <h3>Продвижение в VK</h3>
+        <p>Создание сообществ, таргетированная реклама и работа с аудиторией.</p>
+        <a href="#calc" class="btn btn-block">ПЕРЕЙТИ В РАЗДЕЛ</a>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path></svg></div>
+        <h3>Программирование</h3>
+        <p>Разработка индивидуального функционала, интеграций, CRM и API-решений.</p>
+        <a href="#calc" class="btn btn-block">ПЕРЕЙТИ В РАЗДЕЛ</a>
+      </div>
+
+    </div>
+
+    <!-- CALCULATOR -->
+    <div class="calc-wrapper" id="calc">
+      <div class="calc-grid">
+        <div class="calc-form">
+          <h2>Калькулятор <span style="color:var(--red);">стоимости</span></h2>
+          <p>Выберите услугу и узнайте примерную стоимость</p>
+          <label for="serviceSelect">Услуга</label>
+          <select id="serviceSelect">
+            <option value="30000">Разработка сайта — от 30 000 ₽</option>
+            <option value="15000">Реклама — от 15 000 ₽</option>
+            <option value="10000">Ведение Авито — от 10 000 ₽</option>
+          </select>
+          <div class="calc-checkbox">
+            <input type="checkbox" id="urgentCheck">
+            <label for="urgentCheck" style="margin:0;font-weight:600;cursor:pointer;">Срочно (+30%)</label>
+          </div>
+          <button class="btn btn-block" id="calcBtn" type="button">Рассчитать</button>
+        </div>
+        <div class="calc-result">
+          <div class="label">Итоговая стоимость:</div>
+          <div class="price" id="calcPrice"><span>—</span></div>
+          <div class="note" id="calcNote">Выберите услугу и нажмите «Рассчитать»</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section class="section" id="portfolio">
+  <div class="container">
+    <h2 class="section-title">Наше <span class="accent">портфолио</span></h2>
+    <p class="section-subtitle">Несколько проектов, реализованных нашей командой</p>
+    <div class="portfolio-grid">
+      
+      <!-- КАРТОЧКА 1 -->
+      <div class="portfolio-card">
+        <div class="portfolio-thumb">
+          <!-- Твоя картинка 1.png -->
+          <img src="1.png" alt="Магазин стройматериалов" class="port-circle">
+        </div>
+        <div class="portfolio-info">
+          <h4>Магазин стройматериалов</h4>
+          <p>Разработка сайта + настройка рекламы в Яндекс.Директ</p>
+        </div>
+      </div>
+
+      <!-- КАРТОЧКА 2 -->
+      <div class="portfolio-card">
+        <div class="portfolio-thumb">
+          <!-- Твоя картинка 2.png -->
+          <img src="2.png" alt="Услуги клининга" class="port-circle">
+        </div>
+        <div class="portfolio-info">
+          <h4>Услуги клининга</h4>
+          <p>Одностраничный сайт с формой заявки и калькулятором</p>
+        </div>
+      </div>
+
+      <!-- КАРТОЧКА 3 -->
+      <div class="portfolio-card">
+        <div class="portfolio-thumb">
+          <!-- Твоя картинка 3.png -->
+          <img src="3.png" alt="Продажа мебели" class="port-circle">
+        </div>
+        <div class="portfolio-info">
+          <h4>Продажа мебели</h4>
+          <p>Ведение Авито и продвижение сообщества ВКонтакте</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- WHY US -->
+<section class="section why-section">
+  <div class="container">
+    <h2 class="section-title" style="color:#fff;">Почему выбирают <span class="accent">нас</span></h2>
+    <div class="why-grid" style="margin-top:32px;">
+      <div class="why-item"><div class="num">7+</div><div class="txt">лет на рынке Нижнего Новгорода</div></div>
+      <div class="why-item"><div class="num">250+</div><div class="txt">реализованных проектов</div></div>
+      <div class="why-item"><div class="num">98%</div><div class="txt">клиентов остаются с нами повторно</div></div>
+      <div class="why-item"><div class="num">24/7</div><div class="txt">поддержка действующих клиентов</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACTS -->
+<section class="section contact-section" id="contacts">
+  <div class="container contact-grid">
+    <div class="contact-info">
+      <h3>Свяжитесь <span class="accent">с нами</span></h3>
+      <p>Оставьте заявку, и наш специалист свяжется с вами в течение 15 минут.</p>
+      <ul>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg><div><b>Телефон:</b> <a href="tel:+79056611860" style="color:var(--red);font-weight:600;">+7 905 661-18-60</a></div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg><div><b>Адрес:</b> г. Нижний Новгород, ул. Примерная, 1</div></li>
+        <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg><div><b>Режим работы:</b> Пн–Пт, 09:00–21:00</div></li>
+      </ul>
+    </div>
+    <div class="contact-form">
+      <form id="feedbackForm" novalidate>
+        <div class="form-group" id="nameGroup">
+          <label for="nameInput">Ваше имя</label>
+          <input type="text" id="nameInput" placeholder="Иван Иванов">
+          <div class="form-error">Пожалуйста, укажите ваше имя</div>
+        </div>
+        <div class="form-group" id="phoneGroup">
+          <label for="phoneInput">Телефон</label>
+          <input type="text" id="phoneInput" placeholder="+7 (___) ___-__-__">
+          <div class="form-error">Пожалуйста, укажите номер телефона</div>
+        </div>
+        <button type="submit" class="btn btn-block">Отправить заявку</button>
+        <div class="form-message" id="formMessage"></div>
+        <div class="form-policy">Нажимая кнопку, вы соглашаетесь с политикой обработки данных.</div>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container footer-inner">
+    <div class="logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="4" /><path d="M12 7v10M7 12h10" /><circle cx="12" cy="12" r="3" fill="currentColor" stroke="var(--black)" stroke-width="1.5"/></svg>
+      ВЕБ<span>РАЗРАБОТКА</span>
+    </div>
+    <div>© 2026 ВЕБРАЗРАБОТКА. Нижний Новгород.</div>
+    <div style="font-weight:600;color:#fff;">+7 905 661-18-60</div>
+  </div>
+</footer>
+
+<script>
+  // ===== КЛИК ПО ЛОГОТИПУ (ВОЗВРАТ НАВЕРХ) =====
+  document.getElementById('logoTop').addEventListener('click', function() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // ===== ИДЕАЛЬНО ПЛАВНЫЙ СКРОЛЛ ПО ЯКОРЯМ =====
+  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+    anchor.addEventListener('click', function (e) {
+      const href = this.getAttribute('href');
+      if (href === "#" || href === "") return;
+      
+      e.preventDefault();
+      const targetElement = document.querySelector(href);
+      if (targetElement) {
+        const headerHeight = document.querySelector('.main-header').offsetHeight;
+        const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight - 10;
+        
+        window.scrollTo({
+          top: targetPosition,
+          behavior: 'smooth'
+        });
+      }
+    });
+  });
+
+  // ===== MOBILE MENU =====
+  const burgerBtn = document.getElementById('burgerBtn');
+  const mainNav = document.getElementById('mainNav');
+  burgerBtn.addEventListener('click', () => {
+    mainNav.classList.toggle('open');
+    burgerBtn.classList.toggle('open');
+  });
+  mainNav.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+      mainNav.classList.remove('open');
+      burgerBtn.classList.remove('open');
+    });
+  });
+
+  // ===== CALCULATOR =====
+  const calcBtn = document.getElementById('calcBtn');
+  const serviceSelect = document.getElementById('serviceSelect');
+  const urgentCheck = document.getElementById('urgentCheck');
+  const calcPrice = document.getElementById('calcPrice');
+  const calcNote = document.getElementById('calcNote');
+
+  calcBtn.addEventListener('click', () => {
+    const basePrice = parseInt(serviceSelect.value, 10);
+    let finalPrice = basePrice;
+    let note = '';
+    if (urgentCheck.checked) {
+      finalPrice = Math.round(basePrice * 1.3);
+      note = 'С учётом срочности (+30%)';
+    } else {
+      note = 'Стандартные сроки выполнения';
+    }
+    calcPrice.innerHTML = '<span>' + finalPrice.toLocaleString('ru-RU') + ' ₽</span>';
+    calcNote.textContent = note;
+  });
+
+  // ===== CONTACT FORM (Проверка вводимого текста + Маска) =====
+  const feedbackForm = document.getElementById('feedbackForm');
+  const nameInput = document.getElementById('nameInput');
+  const phoneInput = document.getElementById('phoneInput');
+  const nameGroup = document.getElementById('nameGroup');
+  const phoneGroup = document.getElementById('phoneGroup');
+  const formMessage = document.getElementById('formMessage');
+
+  // 1. Маска для телефона (только цифры, +, (, ), -)
+  phoneInput.addEventListener('input', function(e) {
+    // Удаляем всё, кроме цифр и +
+    let val = this.value.replace(/[^\d+]/g, '');
+    this.value = val;
+  });
+
+  // 2. Запрет цифр в имени (только буквы, пробел, дефис)
+  nameInput.addEventListener('keydown', function(e) {
+    // Разрешаем Backspace, Delete, Tab, стрелки, Home, End
+    const allowedKeys = [8, 46, 9, 37, 38, 39, 40, 36, 35];
+    if (allowedKeys.includes(e.keyCode)) return;
+
+    // Блокируем ввод цифр (48-57) и спецсимволов на клавиатуре
+    if ((e.keyCode >= 48 && e.keyCode <= 57) || // основные цифры
+        (e.keyCode >= 96 && e.keyCode <= 105) || // цифры на Numpad
+        e.key === '!' || e.key === '@' || e.key === '#' || e.key === '$' || 
+        e.key === '%' || e.key === '^' || e.key === '&' || e.key === '*' || 
+        e.key === '_' || e.key === '=' || e.key === '+' || e.key === '|' ||
+        e.key === '\\' || e.key === '/' || e.key === '?' || e.key === '<' ||
+        e.key === '>' || e.key === '[' || e.key === ']' || e.key === '{' ||
+        e.key === '}' || e.key === ';' || e.key === ':' || e.key === "'" ||
+        e.key === '"' || e.key === ',' || e.key === '.') {
+      e.preventDefault();
+    }
+  });
+
+  // ===== Обработка отправки формы =====
+  feedbackForm.addEventListener('submit', function(e) {
+    e.preventDefault();
+    let isValid = true;
+    if (nameInput.value.trim() === '') { nameGroup.classList.add('invalid'); isValid = false; } else { nameGroup.classList.remove('invalid'); }
+    if (phoneInput.value.trim() === '') { phoneGroup.classList.add('invalid'); isValid = false; } else { phoneGroup.classList.remove('invalid'); }
+    formMessage.classList.remove('success', 'error');
+    if (!isValid) {
+      formMessage.textContent = 'Пожалуйста, заполните все обязательные поля.';
+      formMessage.classList.add('error');
+      return;
+    }
+    formMessage.textContent = 'Спасибо, заявка отправлена! Мы свяжемся с вами.';
+    formMessage.classList.add('success');
+    feedbackForm.reset();
+    nameGroup.classList.remove('invalid');
+    phoneGroup.classList.remove('invalid');
+    setTimeout(() => { formMessage.classList.remove('success', 'error'); formMessage.textContent = ''; }, 5000);
+  });
+  
+  // Снятие ошибки при вводе
+  [nameInput, phoneInput].forEach(input => {
+    input.addEventListener('input', () => {
+      input.closest('.form-group').classList.remove('invalid');
+    });
+  });
+
+
+
+
+</script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
